@@ -13,7 +13,6 @@ f.lines.each do |l|
   until (new_req / 3 - 2) <= 0
     new_req = new_req / 3 - 2
     sum += new_req
-    puts new_req
   end
 
   main_sum += sum

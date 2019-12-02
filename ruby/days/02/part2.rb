@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'benchmark'
-
 # Advent of Code 2019 - Day 2
 
 rom = File.read('input.txt').split(',').map(&:to_i)
@@ -40,3 +38,4 @@ rom = File.read('input.txt').split(',').map(&:to_i)
     end
   end
 end
+

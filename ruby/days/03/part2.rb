@@ -2,7 +2,7 @@
 
 require 'set'
 
-# Advent of Code Day 3 Part 1
+# Advent of Code Day 3 Part 2
 
 line1, line2 = *(File.readlines('input.txt').map { |l|
   l.split(',').map { |loc|

@@ -20,8 +20,9 @@ line1, line2 = *(File.readlines('input.txt').map { |l|
 
 def trace(line)
   c = [0, 0]
+  steps = 0
 
-  set = Set.new
+  map = Hash.new
   line.each do |i|
     dist = i[1]
     d = c.dup
@@ -43,17 +44,19 @@ def trace(line)
     end
 
     until c[0] == d[0] && c[1] == d[1]
-      set.add c.dup
+      map[c.dup] = steps if !map[c.dup]
+      steps += 1
       c[0] += change[0]
       c[1] += change[1]
     end
   end
-  return set
+  return map
 end
 
-trace_1 = trace(line1)
-trace_2 = trace(line2)
+trace1 = trace(line1)
+trace2 = trace(line2)
 
-intersections = trace_1 & trace_2 - Set[[0, 0]]
+intersections = trace2.keep_if { |k, v| trace1.has_key?(k) }.keys - [[0, 0]]
 
-puts intersections.min_by { |a| a[0].abs + a[1].abs }.sum
+min_int = intersections.min_by { |p| trace1[p] + trace2[p] }
+p trace1[min_int] + trace2[min_int]

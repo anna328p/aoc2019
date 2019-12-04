@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# Advent of Code 2019 - Day 4 - Part 1
+# Advent of Code 2019 - Day 4 - Part 2
 
 min, max = File.read('input.txt').chomp.split('-').map(&:to_i)
 

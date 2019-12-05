@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# Intcode Interpreter
+# Advent of Code - Day 5 - Part 1
 
 class State
   attr_accessor :memory, :ip, :halted, :mode

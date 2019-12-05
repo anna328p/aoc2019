@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require 'set'
-
 # Advent of Code Day 3 Part 2
 
 line1, line2 = *(File.readlines('input.txt').map { |l|

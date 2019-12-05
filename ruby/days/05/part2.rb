@@ -42,7 +42,6 @@ class Instruction
   end
 end
 
-
 def cm(state, pos, arg)
   if state.mode[pos] == :position
     return state.memory[arg]

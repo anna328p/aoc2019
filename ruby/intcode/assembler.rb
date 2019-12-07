@@ -11,12 +11,15 @@ $DIR = [
 $OPS = []
 $LABELS = {}
 
-def add(arg1, arg2, dest)
-  $OPS << 1 << arg1 << arg2 << dest
-end
-
-def mul(arg1, arg2, dest)
-  $OPS << 2 << arg1 << arg2 << dest
+class Kernel
+  class <<self
+    $INSTRUCTIONS.each do |ins|
+      define_method ins do |*args|
+        $OPS << tokens.invert[ins.name]
+        args.each 
+      end
+    end
+  end
 end
 
 def lbl(sym)

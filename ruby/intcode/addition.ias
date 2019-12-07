@@ -1,0 +1,11 @@
+# test file
+
+add 1, 2, [0]
+mul [0], 1, [1]
+out [1]
+
+lbl:test
+out [1]
+jit [1], :test
+hlt
+

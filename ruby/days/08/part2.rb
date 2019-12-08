@@ -17,5 +17,5 @@ layers.each do |l|
 end
 
 f.each_slice(width) do |l|
-  puts l.join.gsub(?0, ' ')
+  puts l.join.tr('01', ' #')
 end

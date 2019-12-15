@@ -5,18 +5,20 @@
 # Defines the state of the Intcode computer.
 
 class State
-  attr_accessor :memory, :ip, :halted, :mode, :rel_base
+  attr_accessor :memory, :ip, :halted, :mode, :rel_base, :iq, :oq
   attr_reader :max_arity, :mem_scale
 
   ##
   # Initializes the Intcode computer based on a memory image.
 
-  def initialize(rom)
+  def initialize(rom, iq = nil, oq = nil)
     @memory = rom.dup
     @ip = 0
     @rel_base = 0
     @halted = false
     @mode = []
+
+    @iq, @oq = iq, oq
 
     @max_arity = $OPCODES.values.map { |ins| ins.arity }.max
     @mem_scale = @memory.size.to_s.size
@@ -164,10 +166,18 @@ $OPCODES = {
     s.memory[s.addr(2, c)] = s.cm(0, a) * s.cm(1, b)
   }),
   3  => Opcode.new(:inp, -> s, a {
-    s.memory[s.addr(0, a)] = STDIN.gets.to_i
+    if s.iq
+      s.memory[s.addr(0, a)] = s.iq.pop
+    else
+      s.memory[s.addr(0, a)] = STDIN.gets.to_i
+    end
   }),
   4  => Opcode.new(:out, -> s, a {
-    puts s.cm(0, a)
+    if s.oq
+      s.oq << s.cm(0, a)
+    else
+      puts s.cm(0, a)
+    end
   }),
   5  => Opcode.new(:jit, -> s, a, b {
     if s.cm(0, a) != 0

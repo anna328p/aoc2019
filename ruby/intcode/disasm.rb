@@ -11,16 +11,22 @@ def disasm(s)
 
     begin
       ins = s.next_ins
-      p ins
+      if ins == nil
+        s.ip += 1
+        next
+      end
+      # p ins
     rescue RuntimeError => e
       codes << ["# [#{s.ip}]: value #{s.curr_ins}", "#{e.message}"]
       s.ip += 1
       next
     end
 
-    codes << [ins.inspect, "# [#{s.ip}]: #{ins.code} #{ins.args.join(' ')}"]
+    if ins
+      codes << [ins.inspect, "# [#{s.ip}]: #{ins.opcode.name} #{ins.args.join(' ')}"]
+      s.ip += ins.arity + 1
+    end
 
-    s.ip += ins.arity + 1
   end
 
   return codes

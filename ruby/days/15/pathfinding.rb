@@ -1,4 +1,4 @@
-require './traversal'
+require './show'
 ### PATHFINDING ###
 
 def neighbors c

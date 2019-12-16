@@ -1,0 +1,14 @@
+	add :text, 0, 1000
+
+lbl :loop
+	out [1000]
+	add [1000], 1, 1000
+	teq [1000], :end_text, 1001
+	jit [1001], :end
+
+lbl :end
+	hlt
+
+lbl :text
+	str "I'd just like to interject for a moment."
+lbl :end_text

@@ -1,0 +1,22 @@
+cutoff: 249
+
+### ADDRESSES ###
+
+1033: direction
+1032: temp
+
+31: go_north
+58: go_south
+81: go_east
+104: go_west
+124: do_move
+
+0: choose_direction
+
+165: func_1
+217: func_2
+
+1039: x_move
+1040: y_move
+
+1044: is_wall

@@ -11,12 +11,17 @@ $DIR = [
 $OPS = []
 $LABELS = {}
 
+def rel(addr)
+  return {rel: addr}
+  
 class Kernel
   class <<self
     $INSTRUCTIONS.each do |ins|
       define_method ins do |*args|
         $OPS << tokens.invert[ins.name]
-        args.each 
+        args.each do |a|
+          if a.class
+        end
       end
     end
   end

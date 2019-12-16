@@ -37,6 +37,9 @@ class State
     end
   end
 
+  ##
+  # Returns a number of arguments given a function's arity.
+
   def get_args(arity)
     (1..arity).map { |pos| memory[ip + pos] }
   end

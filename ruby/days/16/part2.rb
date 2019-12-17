@@ -3,12 +3,14 @@
 # Advent of Code 2019 - Day 16 - Part 2
 
 input = File.read(ARGV[0] || 'input.txt').chomp.chars.map(&:to_i)
+offset = input[0..7].map
 
 def phase(input)
   input.map.with_index do |val, idx|
-    # Generate the pattern
-    pattern = [0, 1, 0, -1].flat_map { |item| [item] * (idx + 1) }.cycle.take(input.size + 1).drop(1)
-    pattern.zip(input).map { |i| i[0] * i[1] }.sum.abs % 10
+    input.map.with_index { |x, elem|
+      val = (elem + 1) / (idx + 1) % 4
+      x * (val == 1 ? 1 : val == 3 ? -1 : 0)
+    }.sum.abs % 10
   end
 end
 

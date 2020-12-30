@@ -10,7 +10,8 @@ def disasm(s, addr_map)
 
   until s.ip > s.memory.size or s.ip > (addr_map['cutoff'] || Float::INFINITY)
     if addr_map.keys.include? s.ip
-      codes << ["# label #{addr_map[s.ip]}", ""]
+      codes << ["", ""]
+      codes << ["l:#{addr_map[s.ip]}", ""]
     end
 
     begin
@@ -27,23 +28,66 @@ def disasm(s, addr_map)
     end
 
     if ins
-      f_args = ins.args.map.with_index { |a, i|
+      op = ins.opcode.name
+      useless_arg = nil
+
+      a0 = ins.args[0]
+      a1 = ins.args[1]
+
+      case op
+      when :add
+        if a0 == 0 || a1 == 0
+          useless_arg = ins.args.index(0)
+          op = :mov
+        end
+      when :mul
+        if a0 == 1 || a1 == 1
+          useless_arg = ins.args.index(1)
+          op = :mov
+        end
+      when :jit
+        if a0 == 1
+          useless_arg = 0
+          op = :jmp
+        end
+      when :jif
+        if a0 == 0
+          useless_arg = 0
+          op = :jmp
+        end
+      end
+
+      f_args = ins.args.filter_map.with_index { |a, i|
+        next if useless_arg == i
+
+        arg = a
+        if addr_map[a]
+          arg = ":#{addr_map[a]}"
+        end
+
         case ins.mode[i]
         when :position
-          a = addr_map[a] || a
-          "[#{a}]"
+          if a != arg
+            arg
+          else
+            "[#{a}]"
+          end
         when :relative
           "rel(#{a})"
         else
           jumps = [:jit, :jif]
           if jumps.include? ins.opcode.name and i == 1
-            a = addr_map[a] || a
+            a = arg
           end
           "#{a}"
         end
       }.join ', '
-      f_ins = "#{ins.opcode} #{f_args}"
-      codes << [f_ins, "# [#{s.ip}]: #{ins.code} #{ins.args.join(' ')}"]
+
+      f_ins     = "\t#{op}\t#{f_args}"
+      f_comment = "# [#{s.ip}]: #{ins.code} #{ins.args.join(' ')}"
+
+      codes << [f_ins, f_comment]
+
       s.ip += ins.arity + 1
     end
 

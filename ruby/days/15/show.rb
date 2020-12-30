@@ -21,9 +21,12 @@ def show m, *all_pos, **kwargs
     a[t[0] - xmin][t[1] - ymin] = val
   end
   all_pos.each do |pos|
+    if pos
     puts xmin
     puts "#{a.size} #{a[0].size} #{pos[0] - xmin} #{a[pos[0]-xmin]}"
+    a[pos[0] - xmin] |= [];
     a[pos[0] - xmin][pos[1] - ymin] = '▓▓'
+    end
   end
 
   if kwargs[:src]
